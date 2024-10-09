@@ -1,0 +1,54 @@
+---
+title: "Population data analysis | Association Rules"
+output: html_notebook
+---
+
+Import library
+
+```{r}
+library(arules)
+```
+
+Read Data
+
+```{r}
+data <- read.csv('PERSONA_BDP.csv', sep=",")
+head(data)
+```
+
+Find rules apriori with support 0.2 and confidence 0.5
+
+```{r}
+data$PEA[is.na(data$PEA)] <- 0
+data$POCUPA[is.na(data$POCUPA)] <- 0
+data$PEI[is.na(data$PEI)] <- 0
+reglas <- apriori(data, parameter = list(support=0.2, confidence=0.5))
+```
+
+Inspect rule 100 to 200
+
+```{r}
+inspect(reglas[1500:1600])
+```
+
+Regla 1
+
+```{r}
+inspect(reglas[818])
+```
+
+Regla 2
+
+```{r}
+inspect(reglas[885])
+```
+
+Regla 3
+
+```{r}
+inspect(reglas[1068])
+```
+
+```{r}
+inspect(reglas[1269])
+```

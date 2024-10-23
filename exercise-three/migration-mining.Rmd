@@ -1,0 +1,67 @@
+---
+title: "Migration data analysis | Association Rules"
+output: html_notebook
+---
+
+Import library
+
+```{r}
+library(arules)
+```
+
+Read Data
+
+```{r}
+data <- read.csv('MIGRACION_BDP.csv', sep=",")
+head(data)
+data
+```
+
+Delimitar columnas
+
+```{r}
+data2 <- data[, c(1, 2, 5, 9, 10, 11)]
+```
+
+Reglas fpgrowht
+
+```{r}
+reglas <- fim4r(data2, method = "fpgrowth", target = "rules", support = .1, confidence = .5)
+```
+
+Reglas por frame
+
+```{r}
+reglasframe <- as(reglas, "data.frame")
+View(reglasframe)
+```
+
+REVISAR SOLO EDADES ENTRE 20 Y 28 (por analisis anteriores)
+
+```{r}
+dataEdades <- subset(data, PEI4 < 29 & PEI4 > 19)
+dataEdades
+```
+
+```{r}
+dataEdades2 <- dataEdades[, c(1, 2, 5, 9, 10, 11)]
+reglas2 <- fim4r(dataEdades2, method = "fpgrowth", target = "rules", support = .15, confidence = .4)
+reglasframe <- as(reglas2, "data.frame")
+View(reglasframe)
+```
+
+Regla 24 y 48 Interesante, Regla 30 interesante. Norte y Oriente (DEP 13-22) datos con mayor cantidad de reglas.
+
+
+SUBSET DE DEPARTAMENTOS DEL NORTE Y ORIENTE.
+
+```{r}
+dataDEP <- subset(data, DEPARTAMENTO >= 13)
+dataDEP
+dataDEP2 <- dataDEP[, c(2, 5, 9, 10, 11)]
+reglas3 <- fim4r(dataDEP2, method = "fpgrowth", target = "rules", support = .15, confidence = .3)
+reglasframe <- as(reglas3, "data.frame")
+View(reglasframe)
+```
+
+De 19 a 28 mayor cantidad depersonas.

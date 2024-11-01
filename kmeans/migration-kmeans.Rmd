@@ -1,0 +1,90 @@
+---
+title: "Migration Kmeans"
+output: html_notebook
+---
+
+Instalar paqueterías
+
+```{r}
+install.packages("arules")
+library(arules)
+install.packages("ggplot2")
+library(ggplot2)
+```
+
+Read Data
+
+```{r}
+data <- read.csv('C:/Users/Mario/Documents/Universidad/Maestría/Cuarto Trimestre/Mineria de datos/db_csv_/MIGRACION_BDP.csv', sep=",")
+head(data)
+data
+```
+
+Delimitar columnas
+
+```{r}
+data_apriori <- data[, c(1, 2, 5, 9, 10, 11)]
+head(data_apriori)
+```
+
+Kmeans functionality
+
+```{r}
+cluster <- kmeans(data_apriori, centers=5)
+```
+
+Graficar para visualizar la información
+
+```{r}
+library(ggplot2)
+ggplot(data_apriori, aes(x = PEI4, y = DEPARTAMENTO, color = as.factor(cluster$cluster)))+
+  geom_point()+
+  geom_point(data = as.data.frame(cluster$centers), aes(x=PEI4, y = DEPARTAMENTO), color = "black", size=4, shape=17)+
+  labs(title = "Edad vs DEPARTAMENTO")+
+  theme_minimal()
+```
+```{r}
+ggplot(data_apriori, aes(x = PEI4, y = PEI3, color = as.factor(cluster$cluster)))+
+  geom_point()+
+  geom_point(data = as.data.frame(cluster$centers), aes(x=PEI4, y = PEI3), color = "black", size=4, shape=17)+
+  labs(title = "Edad vs SEXO")+
+  theme_minimal()
+```
+
+```{r}
+ggplot(data_apriori, aes(x = PEI4, y = AREA, color = as.factor(cluster$cluster)))+
+  geom_point()+
+  geom_point(data = as.data.frame(cluster$centers), aes(x=PEI4, y = AREA), color = "black", size=4, shape=17)+
+  labs(title = "Edad vs AREA")+
+  theme_minimal()
+```
+
+Se hará una validación por cada género
+
+Hombres:
+```{r}
+datah <- subset(data_apriori, PEI3==1)
+clusterh <- kmeans(datah, centers=5)
+```
+Mujeres:
+```{r}
+datam <- subset(data_apriori, PEI3==2)
+clusterm <- kmeans(datam, centers=5)
+```
+
+Se graficará
+
+```{r}
+ggplot(datah, aes(x = PEI4, y = DEPARTAMENTO, color = as.factor(clusterh$cluster)))+
+  geom_point()+
+  geom_point(data = as.data.frame(clusterh$centers), aes(x=PEI4, y = DEPARTAMENTO), color = "black", size=4, shape=17)+
+  labs(title = "Edad vs DEPARTAMENTO")+
+  theme_minimal()
+
+ggplot(datam, aes(x = PEI4, y = DEPARTAMENTO, color = as.factor(clusterm$cluster)))+
+  geom_point()+
+  geom_point(data = as.data.frame(clusterm$centers), aes(x=PEI4, y = DEPARTAMENTO), color = "black", size=4, shape=17)+
+  labs(title = "Edad vs DEPARTAMENTO")+
+  theme_minimal()
+```
+

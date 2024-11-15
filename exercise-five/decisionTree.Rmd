@@ -1,0 +1,49 @@
+---
+title: "Decision Tree"
+output: html_notebook
+---
+
+#import libraries
+
+```{r}
+library(rpart)
+library(rpart.plot)
+```
+
+# Read Hogar
+
+```{r}
+hogar = read.csv('HOGAR_BDP.csv', sep=',')
+```
+
+# Filter Hogar
+
+```{r}
+#datamsc2 <- data[, c(9,10,11,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35)]
+arbol <- rpart(AREA ~
+               PCH1+
+               PCH2+
+               PCH3+
+               PCH4+
+               PCH5+
+               PCH6+
+               PCH7+
+               PCH8+
+               PCH9_A+
+               PCH9_B+
+               PCH9_C+
+               PCH9_D+
+               PCH9_E+
+               PCH9_F+
+               PCH9_G+
+               PCH9_H+
+               PCH9_I+
+               PCH9_J+
+               PCH9_K+
+               PCH9_L+
+               PCH9_M+
+               data = hogar, method = "class")
+
+rpart.plot(arbol, type=2, extra=0, under = TRUE, fallen.leaves = TRUE, box.palette = "BuGn", 
+           main ="Predicción de area", cex = 1)
+```
